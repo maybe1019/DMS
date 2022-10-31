@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dms-mbs-client
+  name: dms-mbs-client
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dms-mbs-client
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: dms-mbs-client
+    spec:
+      containers:
+      - image: us.gcr.io/ct-admin-project/capitaltyping/dms-mbs-client
+        imagePullPolicy: Always
+        name: dms-mbs-client
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
